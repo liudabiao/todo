@@ -1,7 +1,7 @@
 <template>
   <div class="login">
-    <message ref="msg" type="warn" text="这是一条测试信息"></message>
-    <forget></forget>
+    <message ref="msg" :type="alertType" :text="alertMsg"></message>
+    <forget ref="fgt"></forget>
     <div class="info-wrapper">
       <div class="sign-wrapper">
         <div :class="[status?'sign-in isChecked':'sign-in']" @click="userCheck('in')">SIGN IN</div>
@@ -25,7 +25,7 @@
               </div>
               <div class="text">Keep me signed in</div>
             </div>
-            <div class="right">
+            <div class="right" @click="forget">
               Forgot password?
             </div>
           </div>
@@ -38,7 +38,7 @@
             <li>
               <div class="item">
                 <div class="text">NICKNAME</div>
-                <div class="input"><input placeholder="enter a nickname of 2 to 6 digits"
+                <div class="input"><input placeholder="enter a nickname of 2 to 20 digits"
                                           @focus="infoAlertText='';infoAlert=false" @blur="checkNickname"
                                           v-model="signup.nickname"/></div>
               </div>
@@ -94,6 +94,9 @@
         password: '',
         infoAlert: false,
         infoAlertText: '',
+        showCtrl: false,
+        alertMsg: '',
+        alertType: '',
         signup: {
           nickname: '',
           username: '',
@@ -103,27 +106,11 @@
         signin: {
           username: '',
           password: ''
-        },
-        roles: {
-          username: {
-            min: 6,
-            max: 12,
-            role: 'a-zA-Z0-9'
-          },
-          password: {
-            min: 6,
-            max: 12,
-            role: 'a-zA-Z0-9'
-          },
-          nickname: {
-            min: 6,
-            max: 12
-          }
         }
       };
     },
     mounted() {
-      if(this.$storage.getStorage('rememberme')) {
+      if (this.$storage.getStorage('rememberme')) {
         const tempInfo = this.$storage.getStorage('rememberme');
         this.signin.username = tempInfo.username;
         this.signin.password = tempInfo.password;
@@ -148,18 +135,24 @@
             return;
           }
         }
-        this.signin.password = doNotMatch(this.signin.password);
+        if(this.signin.password.length <= 12) {
+          this.signin.password = doNotMatch(this.signin.password);
+        }
         this.$http.post("/users/login", this.signin).then((res) => {
           if (res.data.status === '0') {
             const loginInfo = {
               username: res.data.result[0].username,
               nickname: res.data.result[0].nickname
             };
-            if (this.$refs.remember.checked) {
+            const flag = this.$refs.remember.checked || false;
+            if (flag) {
               this.$storage.setStorage('rememberme', this.signin);
             }
             this.$store.commit('updateUserInfo', loginInfo);
+            this.$router.push('/homepage');
           } else {
+            this.alertMsg = 'username or password error';
+            this.alertType = 'warn';
             this.$refs.msg.self();
           }
         })
@@ -196,6 +189,22 @@
         if (this.signup.password !== this.signup.reppassword) {
           this.infoAlert = true;
           this.infoAlertText = 'The two passwords do not match, try again';
+          return;
+        }
+        if(this.signup.nickname.length < 2 || this.signup.nickname > 20) {
+          this.infoAlert = true;
+          this.infoAlertText = 'nickname does not meet the requirements';
+          return;
+        }
+        if(this.signup.username.length < 6 || this.signup.nickname > 12) {
+          this.infoAlert = true;
+          this.infoAlertText = 'username does not meet the requirements';
+          return;
+        }
+        if(this.signup.password.length < 6 || this.signup.password > 12) {
+          this.infoAlert = true;
+          this.infoAlertText = 'password does not meet the requirements';
+          return;
         }
         for (let key in this.signup) {
           if (this.signup[key] === '') {
@@ -213,35 +222,8 @@
           }
         })
       },
-      role(key, obj) {
-        const value = obj[key];
-        const target = this.roles[key];
-        if (target.min) {
-          if (value.length < target.min) {
-            return false;
-          }
-        }
-        if (target.max) {
-          if (value.length > target.max) {
-            return false;
-          }
-        }
-        if (target.role) {
-          let res = value;
-          if (target.role.indexOf('a-z') >= 0) {
-            res = res.replace(/[a-z]/, '');
-          }
-          if (target.role.indexOf('A-Z') >= 0) {
-            res = res.replace(/[A-Z]/, '');
-          }
-          if (target.role.indexOf('0-9') >= 0) {
-            res = res.replace(/[0-9]/, '');
-          }
-          if (res.length > 0) {
-            return false;
-          }
-        }
-        return true;
+      forget() {
+        this.$refs.fgt.show = true;
       }
     },
     components: {

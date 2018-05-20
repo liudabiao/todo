@@ -77,6 +77,24 @@ router.post('/signup', (req, res, next) => {
   })
 });
 
+//忘记密码
+router.get('/forget', (req, res, next) => {
+  users.find({username: req.query.username}, (err, doc) => {
+    if(err) {
+      res.json({
+        status: '1',
+        msg: err.message
+      })
+    } else {
+      res.json({
+        status: '0',
+        msg: '',
+        result: doc
+      })
+    }
+  })
+})
+
 //post用body取参数 登陆
 router.post('/login', function(req, res, next) {
   var param = {

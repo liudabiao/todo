@@ -1,20 +1,20 @@
 import CryptoJS from 'crypto-js'
 
-function getAesString(data, key, iv) {
+function getDAesString(encrypted, key, iv) {
   var key = CryptoJS.enc.Utf8.parse(key);
   var iv = CryptoJS.enc.Utf8.parse(iv);
-  var encrypted = CryptoJS.AES.encrypt(data, key,
+  var decrypted = CryptoJS.AES.decrypt(encrypted, key,
     {
       iv: iv,
       mode: CryptoJS.mode.CBC,
       padding: CryptoJS.pad.Pkcs7
     });
-  return encrypted.toString();
+  return decrypted.toString(CryptoJS.enc.Utf8);
 }
 
-export function doNotMatch(data) {
+export function doMatch(data) {
   var key = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
   var iv = '1234567812345678';
-  var encrypted = getAesString(data, key, iv);
-  return encrypted;
+  var decryptedStr = getDAesString(data, key, iv);
+  return decryptedStr;
 }

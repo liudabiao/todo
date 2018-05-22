@@ -6,6 +6,7 @@ import router from './router'
 import axios from 'axios'
 import Vuex from 'vuex'
 import storage from './util/localStorage'
+import './fonts/style.css'
 
 Vue.use(Vuex);
 

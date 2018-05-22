@@ -93,7 +93,12 @@ router.get('/forget', (req, res, next) => {
       })
     }
   })
-})
+});
+
+//获取登陆用户的TODOlist
+router.get('/todo', (req, res, next) => {
+  users.find({username: req.query.username, })
+});
 
 //post用body取参数 登陆
 router.post('/login', function(req, res, next) {

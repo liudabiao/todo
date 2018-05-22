@@ -64,7 +64,9 @@
       }
     },
     mounted() {
-      this.$http.get('/')
+      this.$http.get('/').then((res) => {
+
+      })
     },
     methods: {
       showAddItem() {

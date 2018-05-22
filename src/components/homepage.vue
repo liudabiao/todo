@@ -33,7 +33,58 @@
         </ul>
       </div>
     </div>
-    <div class="tool"></div>
+    <div class="tools">
+      <div class="tool">
+        <ul>
+          <li>
+            <div class="item">
+              <span class="icon icon-color-1 icon-book"></span>
+              <span class="text">书炉</span>
+            </div>
+          </li>
+          <li>
+            <div class="item">
+              <span class="icon icon-color-2 icon-tv"></span>
+              <span class="text">话题</span>
+            </div>
+          </li>
+          <li>
+            <div class="item">
+              <span class="icon icon-color-3 icon-magic-wand"></span>
+              <span class="text">咨询</span>
+            </div>
+          </li>
+          <li>
+            <div class="item">
+              <span class="icon icon-color-4 icon-power"></span>
+              <span class="text">充电</span>
+            </div>
+          </li>
+          <li>
+            <div class="item">
+              <span class="icon icon-color-5 icon-fire"></span>
+              <span class="text">生活</span>
+            </div>
+          </li>
+          <li>
+            <div class="item">
+              <span class="icon icon-color-6 icon-pen"></span>
+              <span class="text">日志</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="info">
+        <ul>
+          <li>刘大彪</li>
+          <li>使用简介</li>
+          <li>LIB相关技术栈</li>
+          <li>我要参与</li>
+          <li>意见投稿</li>
+          <li>功能有待完善，敬请谅解</li>
+        </ul>
+      </div>
+    </div>
     <div class="content">
       <router-view></router-view>
     </div>
@@ -74,7 +125,7 @@
       width: 100%
       height: 60px
       background: rgb(255, 255, 255)
-      box-shadow: 0 2px 15px rgb(190, 190, 190)
+      box-shadow: 0 2px 8px rgb(225, 225, 225)
       .title
         float: left
         width: 250px
@@ -93,7 +144,7 @@
             cursor: pointer
             color: rgb(180, 180, 180)
             &:hover
-              color: rgb(100,100,100)
+              color: rgb(100, 100, 100)
       .search-wrapper
         float: left
         width: 600px
@@ -162,10 +213,10 @@
               span
                 margin-top: 4px
                 font-size: 24px
-                color: rgb(180,180,180)
+                color: rgb(180, 180, 180)
                 cursor: pointer
                 &:hover
-                  color: rgb(100,100,100)
+                  color: rgb(100, 100, 100)
               .point
                 position: absolute
                 bottom: 0
@@ -174,7 +225,71 @@
                 height: 10px
                 border-radius: 50%
                 background: rgb(246, 51, 101)
-                border: 2px solid rgb(255,255,255)
+                border: 2px solid rgb(255, 255, 255)
             .user
               margin-top: -3px
+    .tools
+      position: relative
+      .tool
+        position: fixed
+        top: 80px
+        left: 190px
+        width: 300px
+        height: 200px
+        background: rgb(255, 255, 255)
+        border-radius: 5px
+        box-shadow: 0 1px 8px rgb(225, 225, 225)
+        ul
+          list-style: none
+          li
+            float: left
+            .item
+              width: 40px
+              height: 60px
+              text-align: center
+              margin-right: 45px
+              margin-bottom: 20px
+              .icon
+                font-size: 24px
+                line-height: 48px
+              .text
+                font-size: 14px
+                color: rgb(180, 180, 180)
+              .icon-color-1
+                color: rgb(179, 238, 58)
+              .icon-color-2
+                color: rgb(30, 144, 255)
+              .icon-color-3
+                color: rgb(138, 43, 226)
+              .icon-color-4
+                color: rgb(2255, 215, 0)
+              .icon-color-5
+                color: rgb(246, 51, 101)
+              .icon-color-6
+                color: rgb(70, 130, 180)
+      .info
+        position: fixed
+        top: 270px
+        left: 155px
+        width: 300px
+        ul
+          list-style: none
+          counter-reset: count
+          li
+            font-size: 14px
+            color: rgb(180, 180, 180)
+            float: left
+            margin-right: 10px
+            cursor: pointer
+            &:hover
+              color: rgb(100, 100, 100)
+            &:before
+              content: '·  '
+              color: rgb(180, 180, 180)
+    .content
+      position: absolute
+      top: 80px
+      left: 510px
+      width: 665px
+
 </style>

@@ -37,18 +37,20 @@
 
 <style lang="sass">
   .message
+    z-index: 1000
     .normal, .warn, .success, .alert, .info
+      z-index: 1000
       position: absolute
-      top: 15px
+      top: 30px
       left: 50%
-      height: 60px
+      height: 40px
       width: 300px
       margin-left: -150px
       border-radius: 8px
       box-shadow: 0 2px 10px #5A5E66
       text-align: center
-      font-size: 20px
-      line-height: 60px
+      font-size: 18px
+      line-height: 40px
       color: rgb(245, 245, 245)
     .normal
       background-color: #409EFF

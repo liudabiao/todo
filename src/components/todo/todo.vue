@@ -9,6 +9,10 @@
         <span class="icon icon-sphere"></span>
         <span>全部完成</span>
       </div>
+      <div @click="getList()" class="refresh">
+        <span class="icon icon-spinner11"></span>
+        <span>刷新</span>
+      </div>
       <div class="date">
         <span class="icon icon-calendar"></span>
         <span>日期</span>
@@ -22,33 +26,35 @@
             <div class="closeprompt">关闭</div>
           </div>
           <div class="save">
-            <span class="icon-newspaper"></span>
+            <span @click="saveItem" class="icon-newspaper"></span>
             <div class="saveprompt">保存</div>
           </div>
           <div class="titleinput">
-            <input placeholder="输入标题"/>
+            <input v-model="title" placeholder="输入标题"/>
           </div>
           <div class="contentinput">
-            <textarea rows="4" placeholder="你要做点什么..."></textarea>
+            <textarea v-model="content" rows="4" placeholder="你要做点什么..."></textarea>
           </div>
         </div>
       </transition>
-      <div class="item">
-        <div class="del">
+      <div v-for="item in todo" class="item">
+        <div v-if="!item.status" class="del">
           <span class="icon-cross"></span>
           <div class="delprompt">删除</div>
         </div>
-        <div class="complete">
+        <div v-if="!item.status" class="complete">
           <span class="icon-smile"></span>
           <div class="compprompt">完成</div>
         </div>
-        <div class="title title-cross">TODO模块设计</div>
-        <div class="content">这个模块的主要功能是TODO，有增加item，删除item，完成item，明细查看等功能这个模块的主要功能是TODO，有增加item，删除item，完成item，明细查看等功能
-        </div>
+        <div :class="[item.status?'title title-cross':'title']">{{item.title}}</div>
+        <div class="content">{{item.content}}</div>
       </div>
     </div>
-    <div class="add-page">
-
+    <div class="loading"
+         v-infinite-scroll="loadMore"
+         infinite-scroll-disabled="busy"
+         infinite-scroll-distance="20">
+      <img src="../../assets/circles.svg" v-show="loading">
     </div>
   </div>
 </template>
@@ -60,13 +66,17 @@
       return {
         compPrompt: false,
         delPrompt: false,
-        showAdd: false
+        showAdd: false,
+        busy: true,
+        page: 1,
+        loading: false,
+        title: '',
+        content: '',
+        todo: []
       }
     },
     mounted() {
-      this.$http.get('/').then((res) => {
-
-      })
+      this.getList();
     },
     methods: {
       showAddItem() {
@@ -74,6 +84,58 @@
       },
       hiddenAddPage() {
         this.showAdd = false;
+      },
+      loadMore() {
+        this.busy = true;
+        setTimeout(() => {
+          this.page++;
+          this.getList(true);
+        }, 500);
+      },
+      getList(flag) {
+        const username = this.$store.state.loginStatus.username;
+        const date = this.$format('yyyy-MM-dd');
+        const param = {
+          page: this.page,
+          username: username,
+          date: date
+        };
+        this.loading = true;
+        this.$http.get('/todos/search', {params: param}).then((res) => {
+          this.loading = false;
+          if (res.data.status === '0') {
+            if (flag) {
+              this.todo = this.todo.concat(res.data.result);
+              if (res.data.result.length === 0) {
+                this.busy = true;
+              } else {
+                this.busy = false;
+              }
+            } else {
+              this.page = 1;
+              this.todo = res.data.result;
+              this.busy = false;
+            }
+          } else {
+            this.todo = [];
+          }
+        })
+      },
+      saveItem() {
+        var param = {
+          date: this.$format('yyyy-MM-dd'),
+          username: this.$store.state.loginStatus.username,
+          title: this.title,
+          content: this.content
+        }
+        this.$http.post('/todos/insert', param).then((res) => {
+          if (res.data.status === '0') {
+            this.todo = res.data.result;
+            this.title = '';
+            this.content = '';
+            this.hiddenAddPage();
+          }
+        })
       }
     }
   }
@@ -94,7 +156,7 @@
       line-height: 60px
       border-radius: 5px
       margin-bottom: 10px
-      .add, .complete, .date
+      .add, .complete, .refresh, .date
         float: left
         margin-left: 25px
         margin-right: 40px
@@ -268,4 +330,13 @@
           color: rgb(120, 120, 120)
           line-height: 20px
           margin: 0 15px 15px 25px
+    .loading
+      position: relative
+      float: left
+      width: 100%
+      margin-top: 15px
+      img
+        position: absolute
+        left: 50%
+        margin-left: -15px
 </style>

@@ -15,6 +15,12 @@ module.exports = {
       },
       '/users/*': {
         target:'http://localhost:3000'
+      },
+      '/todos': {
+        target:'http://localhost:3000'
+      },
+      '/todos/*': {
+        target:'http://localhost:3000'
       }
     },
 

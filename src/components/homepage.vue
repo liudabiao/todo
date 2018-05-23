@@ -1,5 +1,6 @@
 <template>
   <div class="homepage">
+    <message ref="msg" :type="alertType" :text="alertMsg"></message>
     <div class="header">
       <div class="title">LIB</div>
       <div class="map">
@@ -92,12 +93,27 @@
 </template>
 
 <script>
+  import message from './message/message';
   export default {
     name: "homepage",
     data() {
       return {
-        inputType: false
+        inputType: false,
+        alertType: '',
+        alertMsg: ''
       }
+    },
+    mounted() {
+      this.$http.get('/users/checklogin').then((res) => {
+        if(res.data.status === '1') {
+          this.alertType = 'warn';
+          this.alertMsg = '请先登录';
+          this.$refs.msg.self();
+          setTimeout(()=>{
+            this.$router.push('/');
+          },2000);
+        }
+      })
     },
     methods: {
       longInput() {
@@ -106,11 +122,16 @@
       shortInput() {
         this.inputType = false;
       }
+    },
+    components: {
+      message
     }
   }
 </script>
 
 <style lang="sass">
+  body
+    background: rgb(245, 245, 245)
   .homepage
     position: absolute
     margin: 0
@@ -119,9 +140,9 @@
     left: 0
     width: 100%
     height: 100%
-    background: rgb(245, 245, 245)
     .header
       position: fixed
+      z-index: 20
       width: 100%
       height: 60px
       background: rgb(255, 255, 255)
@@ -291,5 +312,4 @@
       top: 80px
       left: 510px
       width: 665px
-
 </style>

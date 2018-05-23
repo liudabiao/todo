@@ -70,6 +70,7 @@
       left: 50%
       width: 600px
       height: 300px
+      text-align: center
       margin-left: -300px
       background: rgb(255, 255, 255)
       border-bottom-left-radius: 30px

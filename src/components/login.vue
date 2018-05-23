@@ -149,7 +149,7 @@
               this.$storage.setStorage('rememberme', this.signin);
             }
             this.$store.commit('updateUserInfo', loginInfo);
-            this.$router.push('/homepage');
+            this.$router.push('/homepage/todo');
           } else {
             this.alertMsg = 'username or password error';
             this.alertType = 'warn';
@@ -324,17 +324,17 @@
             width: 600px
             display: flex
             .left
-              flex: 0 0 180px
+              flex: 0 0 450px
               display: flex
               width: 180px
               .check
-                flex: 0 0 5px
+                flex: 0 0 25px
               .text
                 flex: 1
                 color: rgb(245, 245, 245)
                 font-weight: 200
                 font-size: 14px
-                margin-left: -30px
+                line-height: 26px
             .right
               flex: 1
               text-align: right
@@ -376,7 +376,6 @@
                 text-align: left
                 color: rgb(245, 245, 245)
                 font-size: 18px
-                line-height: 24px
                 font-weight: 200
               .input
                 input

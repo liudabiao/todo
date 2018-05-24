@@ -9,13 +9,15 @@
         <span class="icon icon-sphere"></span>
         <span>全部完成</span>
       </div>
-      <div @click="getList()" class="refresh">
+      <div @click="getList('refresh')" class="refresh">
         <span class="icon icon-spinner11"></span>
         <span>刷新</span>
       </div>
       <div class="date">
         <span class="icon icon-calendar"></span>
-        <span>日期</span>
+        <div class="date-wrapper">
+          <datepicker v-model="date" @selected="getList" format="yyyy-MM-dd" input-class="input-class"></datepicker>
+        </div>
       </div>
     </div>
     <div class="list">
@@ -49,17 +51,19 @@
         <div :class="[item.status?'title title-cross':'title']">{{item.title}}</div>
         <div class="content">{{item.content}}</div>
       </div>
-    </div>
-    <div class="loading"
-         v-infinite-scroll="loadMore"
-         infinite-scroll-disabled="busy"
-         infinite-scroll-distance="20">
-      <img src="../../assets/circles.svg" v-show="loading">
+      <div class="loading"
+           v-infinite-scroll="loadMore"
+           infinite-scroll-disabled="busy"
+           infinite-scroll-distance="20">
+        <img src="../../assets/circles.svg" v-show="loading">
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+  import datepicker from 'vuejs-datepicker'
+
   export default {
     name: "todo",
     data() {
@@ -72,8 +76,12 @@
         loading: false,
         title: '',
         content: '',
-        todo: []
+        todo: [],
+        date: this.$format('yyyy-MM-dd')
       }
+    },
+    components: {
+      datepicker
     },
     mounted() {
       this.getList();
@@ -89,22 +97,26 @@
         this.busy = true;
         setTimeout(() => {
           this.page++;
-          this.getList(true);
+          this.getList('infinite');
         }, 500);
       },
       getList(flag) {
+        console.log(this.date);
         const username = this.$store.state.loginStatus.username;
-        const date = this.$format('yyyy-MM-dd');
+        if (flag === 'refresh') {
+          this.page = 1;
+        }
         const param = {
           page: this.page,
           username: username,
-          date: date
+          date: this.$format('yyyy-MM-dd',this.date)
         };
+        console.log(param.date);
         this.loading = true;
         this.$http.get('/todos/search', {params: param}).then((res) => {
           this.loading = false;
           if (res.data.status === '0') {
-            if (flag) {
+            if (flag === 'infinite') {
               this.todo = this.todo.concat(res.data.result);
               if (res.data.result.length === 0) {
                 this.busy = true;
@@ -112,7 +124,6 @@
                 this.busy = false;
               }
             } else {
-              this.page = 1;
               this.todo = res.data.result;
               this.busy = false;
             }
@@ -157,6 +168,7 @@
       border-radius: 5px
       margin-bottom: 10px
       .add, .complete, .refresh, .date
+        position: relative
         float: left
         margin-left: 25px
         margin-right: 40px
@@ -166,6 +178,20 @@
           color: rgb(30, 144, 255)
         .icon
           color: rgb(180, 180, 180)
+        .date-wrapper
+          position: absolute
+          top: 0
+          left: 20px
+          .input-class
+            outline: none
+            border: 0
+            font-size: 16px
+            background: transparent
+            cursor: pointer
+            color: transparent
+            text-shadow: 0 0 0 rgb(100, 100, 100)
+            &:hover
+              text-shadow: 0 0 0 rgb(30, 144, 255)
     .list
       position: relative
       width: 100%

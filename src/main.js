@@ -13,8 +13,11 @@ Vue.use(Vuex);
 Vue.use(infiniteScroll);
 Vue.prototype.$http = axios;
 Vue.prototype.$storage = storage;
-Vue.prototype.$format = function (fmt) {
-  const date = new Date();
+Vue.prototype.$format = function (fmt,string) {
+  let date = new Date();
+  if(string){
+    date = new Date(string);
+  }
   var o = {
     "M+": date.getMonth() + 1, //月份
     "d+": date.getDate(), //日

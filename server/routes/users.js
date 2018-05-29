@@ -21,7 +21,7 @@ mongoose.connection.on("disconnected", function () {
 //GET 用query取参数 注册时检测昵称是否存在
 router.get('/nickname', (req, res, next) => {
   users.find({"nickname": req.query.nickname}, (err, doc) => {
-    if(err) {
+    if (err) {
       res.json({
         status: '1',
         msg: err.message
@@ -39,7 +39,7 @@ router.get('/nickname', (req, res, next) => {
 //注册时检测 用户名是否已经存在
 router.get('/username', (req, res, next) => {
   users.find({"username": req.query.username}, (err, doc) => {
-    if(err) {
+    if (err) {
       res.json({
         status: '1',
         msg: err.message
@@ -60,9 +60,10 @@ router.post('/signup', (req, res, next) => {
     username: req.body.username,
     password: req.body.password,
     nickname: req.body.nickname
-  };;
+  };
+  ;
   users.create(param, (err, doc) => {
-    if(err) {
+    if (err) {
       res.json({
         status: '1',
         msg: err.message
@@ -80,7 +81,7 @@ router.post('/signup', (req, res, next) => {
 //忘记密码
 router.get('/forget', (req, res, next) => {
   users.find({username: req.query.username}, (err, doc) => {
-    if(err) {
+    if (err) {
       res.json({
         status: '1',
         msg: err.message
@@ -96,31 +97,31 @@ router.get('/forget', (req, res, next) => {
 });
 
 //post用body取参数 登陆
-router.post('/login', function(req, res, next) {
+router.post('/login', function (req, res, next) {
   var param = {
     username: req.body.username,
     password: req.body.password
   };
   users.find(param, (err, doc) => {
-    if(err) {
+    if (err) {
       res.json({
         status: '1',
         msg: err.message
       })
     } else {
       console.log(doc);
-      if(doc.length > 0) {
-        res.cookie("username",doc.username,{
-          path:'/',
-          maxAge:1000*60*60
+      if (doc.length > 0) {
+        res.cookie("username", doc[0].username, {
+          path: '/',
+          maxAge: 1000 * 60 * 60
         });
-        res.cookie("nickname",doc.nickname,{
-          path:'/',
-          maxAge:1000*60*60
+        res.cookie("nickname", doc[0].nickname, {
+          path: '/',
+          maxAge: 1000 * 60 * 60
         });
         res.json({
-          status:'0',
-          msg:'',
+          status: '0',
+          msg: '',
           result: doc
         });
       } else {
@@ -134,13 +135,13 @@ router.post('/login', function(req, res, next) {
 });
 
 //检查当前用户是否登陆 通过cookies
-router.get('/checklogin', (req, res, next)=> {
-  if(req.cookies.username) {
+router.get('/checklogin', (req, res, next) => {
+  if (req.cookies.username) {
     res.json({
       status: '0',
       msg: '',
       result: {
-        nickname: req.cookies.nickname||'游客',
+        nickname: req.cookies.nickname || '游客',
         username: req.cookies.username
       }
     });

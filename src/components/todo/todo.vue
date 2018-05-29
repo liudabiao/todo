@@ -16,7 +16,7 @@
       <div class="date">
         <span class="icon icon-calendar"></span>
         <div class="date-wrapper">
-          <datepicker v-model="date" @selected="getList" format="yyyy-MM-dd" input-class="input-class"></datepicker>
+          <datepicker v-model="date" @selected="tick" format="yyyy-MM-dd" input-class="input-class"></datepicker>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
           <div class="delprompt">删除</div>
         </div>
         <div v-if="!item.status" class="complete">
-          <span class="icon-smile"></span>
+          <span @click="completeItem(item._id)" class="icon-smile"></span>
           <div class="compprompt">完成</div>
         </div>
         <div :class="[item.status?'title title-cross':'title']">{{item.title}}</div>
@@ -77,7 +77,8 @@
         title: '',
         content: '',
         todo: [],
-        date: this.$format('yyyy-MM-dd')
+        date: this.$format('yyyy-MM-dd'),
+        index: 1
       }
     },
     components: {
@@ -100,18 +101,21 @@
           this.getList('infinite');
         }, 500);
       },
+      tick() {
+        this.$nextTick(() => {
+          this.getList('');
+        })
+      },
       getList(flag) {
-        console.log(this.date);
         const username = this.$store.state.loginStatus.username;
-        if (flag === 'refresh') {
+        if (flag === 'refresh' || flag === '') {
           this.page = 1;
         }
         const param = {
           page: this.page,
           username: username,
-          date: this.$format('yyyy-MM-dd',this.date)
+          date: this.$format('yyyy-MM-dd', this.date)
         };
-        console.log(param.date);
         this.loading = true;
         this.$http.get('/todos/search', {params: param}).then((res) => {
           this.loading = false;
@@ -145,6 +149,15 @@
             this.title = '';
             this.content = '';
             this.hiddenAddPage();
+          }
+        })
+      },
+      completeItem(id) {
+        this.$http.post('/todos/update', {id: id}).then((res) => {
+          if (res.data.status === '1') {
+            console.log('err');
+          } else {
+            console.log('success');
           }
         })
       }

@@ -13,7 +13,7 @@ router.get('/search', (req, res, next) => {
   };
   let todoModel = todo.find(params).skip(skip).limit(pageSize);
   todoModel.exec((err, doc) => {
-    if(err) {
+    if (err) {
       res.json({
         status: '1',
         msg: err.message
@@ -38,14 +38,14 @@ router.post('/insert', (req, res, next) => {
     status: false
   };
   todo.create(param, (err, doc) => {
-    if(err) {
+    if (err) {
       res.json({
         status: '1',
         msg: err.message
       })
     } else {
       todo.find({username: req.body.username, date: req.body.date}, (err, doc) => {
-        if(err) {
+        if (err) {
           res.json({
             status: '1',
             msg: err.message
@@ -57,6 +57,24 @@ router.post('/insert', (req, res, next) => {
             result: doc
           })
         }
+      })
+    }
+  })
+});
+
+//todo-item 完成
+router.post('/update', (req, res, next) => {
+  todo.update({_id: req.body.id}, {status: true}, (err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message
+      })
+    } else {
+      res.json({
+        status: '0',
+        msg: '',
+        result: 'success'
       })
     }
   })

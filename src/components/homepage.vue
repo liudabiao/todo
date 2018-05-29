@@ -94,6 +94,7 @@
 
 <script>
   import message from './message/message';
+
   export default {
     name: "homepage",
     data() {
@@ -105,13 +106,13 @@
     },
     mounted() {
       this.$http.get('/users/checklogin').then((res) => {
-        if(res.data.status === '1') {
+        if (res.data.status === '1') {
           this.alertType = 'warn';
           this.alertMsg = '请先登录';
           this.$refs.msg.self();
-          setTimeout(()=>{
+          setTimeout(() => {
             this.$router.push('/');
-          },2000);
+          }, 2000);
         }
       })
     },
@@ -132,184 +133,184 @@
 <style lang="sass">
   body
     background: rgb(245, 245, 245)
-  .homepage
-    position: absolute
-    margin: 0
-    padding: 0
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    .header
-      position: fixed
-      z-index: 20
-      width: 100%
-      height: 60px
-      background: rgb(255, 255, 255)
-      box-shadow: 0 2px 8px rgb(225, 225, 225)
-      .title
-        float: left
-        width: 250px
-        text-align: right
-        line-height: 60px
-        font-size: 40px
-        color: rgb(246, 51, 101)
-        margin-right: 30px
-      .map
-        ul
-          li
-            margin-left: 15px
-            list-style: none
-            float: left
-            font-size: 16px
-            cursor: pointer
-            color: rgb(180, 180, 180)
-            &:hover
-              color: rgb(100, 100, 100)
-      .search-wrapper
-        float: left
-        width: 600px
-        .search
-          float: left
-          border: 1px solid rgb(210, 210, 210)
-          width: 300px
-          height: 30px
-          margin-left: 30px
-          background: rgb(245, 245, 245)
-          border-radius: 6px
-          margin-top: -3px
-          padding-left: 10px
-          input
-            float: left
-            border: 0
-            width: 270px
-            outline: none
-            height: 26px
-            line-height: 30px
-            font-size: 14px
-            background: transparent
-          img
-            float: left
-            width: 20px
-            height: 20px
-            background-size: 20px 20px
-            margin-top: 5px
-            cursor: pointer
-        .search-focus
-          float: left
-          border: 1px solid rgb(150, 150, 150)
-          width: 430px
-          height: 30px
-          margin-left: 30px
-          background: rgb(255, 255, 255)
-          border-radius: 6px
-          margin-top: -3px
-          padding-left: 10px
-          input
-            float: left
-            border: 0
-            width: 400px
-            outline: none
-            height: 26px
-            line-height: 30px
-            font-size: 14px
-            background: transparent
-          img
-            float: left
-            width: 20px
-            height: 20px
-            background-size: 20px 20px
-            margin-top: 5px
-            cursor: pointer
-      .personal
-        ul
-          li
-            list-style: none
-            float: left
-            margin-right: 25px
-            .img-wrapper
-              position: relative
-              width: 28px
-              height: 28px
-              span
-                margin-top: 4px
-                font-size: 24px
-                color: rgb(180, 180, 180)
-                cursor: pointer
-                &:hover
-                  color: rgb(100, 100, 100)
-              .point
-                position: absolute
-                bottom: 0
-                right: 0
-                width: 10px
-                height: 10px
-                border-radius: 50%
-                background: rgb(246, 51, 101)
-                border: 2px solid rgb(255, 255, 255)
-            .user
-              margin-top: -3px
-    .tools
-      position: relative
-      .tool
-        position: fixed
-        top: 80px
-        left: 190px
-        width: 300px
-        height: 200px
-        background: rgb(255, 255, 255)
-        border-radius: 5px
-        box-shadow: 0 1px 8px rgb(225, 225, 225)
-        ul
-          list-style: none
-          li
-            float: left
-            .item
-              width: 40px
-              height: 60px
-              text-align: center
-              margin-right: 45px
-              margin-bottom: 20px
-              .icon
-                font-size: 24px
-                line-height: 48px
-              .text
-                font-size: 14px
-                color: rgb(180, 180, 180)
-              .icon-color-1
-                color: rgb(179, 238, 58)
-              .icon-color-2
-                color: rgb(30, 144, 255)
-              .icon-color-3
-                color: rgb(138, 43, 226)
-              .icon-color-4
-                color: rgb(2255, 215, 0)
-              .icon-color-5
-                color: rgb(246, 51, 101)
-              .icon-color-6
-                color: rgb(70, 130, 180)
-      .info
-        position: fixed
-        top: 270px
-        left: 155px
-        width: 300px
-        ul
-          list-style: none
-          counter-reset: count
-          li
-            font-size: 14px
-            color: rgb(180, 180, 180)
-            float: left
-            margin-right: 10px
-            cursor: pointer
-            &:hover
-              color: rgb(100, 100, 100)
-            &:before
-              content: '·  '
-              color: rgb(180, 180, 180)
-    .content
+    .homepage
       position: absolute
-      top: 80px
-      left: 510px
-      width: 665px
+      margin: 0
+      padding: 0
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      .header
+        position: fixed
+        z-index: 20
+        width: 100%
+        height: 60px
+        background: rgb(255, 255, 255)
+        box-shadow: 0 2px 8px rgb(225, 225, 225)
+        .title
+          float: left
+          width: 250px
+          text-align: right
+          line-height: 60px
+          font-size: 40px
+          color: rgb(246, 51, 101)
+          margin-right: 30px
+        .map
+          ul
+            li
+              margin-left: 15px
+              list-style: none
+              float: left
+              font-size: 16px
+              cursor: pointer
+              color: rgb(180, 180, 180)
+              &:hover
+                color: rgb(100, 100, 100)
+        .search-wrapper
+          float: left
+          width: 600px
+          .search
+            float: left
+            border: 1px solid rgb(210, 210, 210)
+            width: 300px
+            height: 30px
+            margin-left: 30px
+            background: rgb(245, 245, 245)
+            border-radius: 6px
+            margin-top: -3px
+            padding-left: 10px
+            input
+              float: left
+              border: 0
+              width: 270px
+              outline: none
+              height: 26px
+              line-height: 30px
+              font-size: 14px
+              background: transparent
+            img
+              float: left
+              width: 20px
+              height: 20px
+              background-size: 20px 20px
+              margin-top: 5px
+              cursor: pointer
+          .search-focus
+            float: left
+            border: 1px solid rgb(150, 150, 150)
+            width: 430px
+            height: 30px
+            margin-left: 30px
+            background: rgb(255, 255, 255)
+            border-radius: 6px
+            margin-top: -3px
+            padding-left: 10px
+            input
+              float: left
+              border: 0
+              width: 400px
+              outline: none
+              height: 26px
+              line-height: 30px
+              font-size: 14px
+              background: transparent
+            img
+              float: left
+              width: 20px
+              height: 20px
+              background-size: 20px 20px
+              margin-top: 5px
+              cursor: pointer
+        .personal
+          ul
+            li
+              list-style: none
+              float: left
+              margin-right: 25px
+              .img-wrapper
+                position: relative
+                width: 28px
+                height: 28px
+                span
+                  margin-top: 4px
+                  font-size: 24px
+                  color: rgb(180, 180, 180)
+                  cursor: pointer
+                  &:hover
+                    color: rgb(100, 100, 100)
+                .point
+                  position: absolute
+                  bottom: 0
+                  right: 0
+                  width: 10px
+                  height: 10px
+                  border-radius: 50%
+                  background: rgb(246, 51, 101)
+                  border: 2px solid rgb(255, 255, 255)
+              .user
+                margin-top: -3px
+      .tools
+        position: relative
+        .tool
+          position: fixed
+          top: 80px
+          left: 190px
+          width: 300px
+          height: 200px
+          background: rgb(255, 255, 255)
+          border-radius: 5px
+          box-shadow: 0 1px 8px rgb(225, 225, 225)
+          ul
+            list-style: none
+            li
+              float: left
+              .item
+                width: 40px
+                height: 60px
+                text-align: center
+                margin-right: 45px
+                margin-bottom: 20px
+                .icon
+                  font-size: 24px
+                  line-height: 48px
+                .text
+                  font-size: 14px
+                  color: rgb(180, 180, 180)
+                .icon-color-1
+                  color: rgb(179, 238, 58)
+                .icon-color-2
+                  color: rgb(30, 144, 255)
+                .icon-color-3
+                  color: rgb(138, 43, 226)
+                .icon-color-4
+                  color: rgb(2255, 215, 0)
+                .icon-color-5
+                  color: rgb(246, 51, 101)
+                .icon-color-6
+                  color: rgb(70, 130, 180)
+        .info
+          position: fixed
+          top: 270px
+          left: 155px
+          width: 300px
+          ul
+            list-style: none
+            counter-reset: count
+            li
+              font-size: 14px
+              color: rgb(180, 180, 180)
+              float: left
+              margin-right: 10px
+              cursor: pointer
+              &:hover
+                color: rgb(100, 100, 100)
+              &:before
+                content: '·  '
+                color: rgb(180, 180, 180)
+      .content
+        position: absolute
+        top: 80px
+        left: 510px
+        width: 665px
 </style>

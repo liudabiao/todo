@@ -2,7 +2,7 @@
   "name": "ldb",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "Huiqi Lu <okapp@okair.net>",
+  "author": "Huiqi Lu",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
